@@ -1,4 +1,4 @@
-using InventorySystem.Data;
+using InventorySystem.DataAccess;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,7 +12,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation(); //Se agrega AddRazorRuntimeCompilation para ver cambios reflejados rápidamente en vistas Razor
 
 var app = builder.Build();
 
@@ -37,7 +37,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{area=Inventory}/{controller=Home}/{action=Index}/{id?}"); //Se agrega area Inventory
 app.MapRazorPages();
 
 app.Run();
