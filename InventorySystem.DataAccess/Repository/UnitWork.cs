@@ -2,12 +2,12 @@
 
 namespace InventorySystem.DataAccess.Repository
 {
-    public class WorkUnit : IWorkUnit
+    public class UnitWork : IUnitWork
     {
         private readonly ApplicationDbContext _db;
         public IStoreRepository Store { get; private set; }
 
-        public WorkUnit(ApplicationDbContext db)
+        public UnitWork(ApplicationDbContext db)
         {
             _db = db;
             Store = new StoreRepository(_db);

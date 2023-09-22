@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace InventorySystem.Utils
 {
-    public static class DS
+    public static class SD
     {
+        public const string Success = "Success";
+        public const string Error = "Error";
     }
 }

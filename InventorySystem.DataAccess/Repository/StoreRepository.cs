@@ -1,10 +1,5 @@
 ﻿using InventorySystem.DataAccess.Repository.IRepository;
 using InventorySystem.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InventorySystem.DataAccess.Repository
 {
@@ -23,9 +18,9 @@ namespace InventorySystem.DataAccess.Repository
 
             if(storeBD != null)
             {
-                storeBD.Name = storeBD.Name;
-                storeBD.Description = storeBD.Description;
-                storeBD.State = storeBD.State;
+                storeBD.Name = store.Name;
+                storeBD.Description = store.Description;
+                storeBD.State = store.State;
                 _db.SaveChanges();
             }
         }
