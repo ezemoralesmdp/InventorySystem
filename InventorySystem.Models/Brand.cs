@@ -2,7 +2,7 @@
 
 namespace InventorySystem.Models
 {
-    public class Store
+    public class Brand
     {
         [Key]
         public int Id { get; set; }
