@@ -14,13 +14,13 @@ namespace InventorySystem.DataAccess.Repository
 
         public void Update(Store store)
         {
-            var storeBD = _db.Stores.FirstOrDefault(s => s.Id == store.Id);
+            var storeDB = _db.Stores.FirstOrDefault(s => s.Id == store.Id);
 
-            if(storeBD != null)
+            if(storeDB != null)
             {
-                storeBD.Name = store.Name;
-                storeBD.Description = store.Description;
-                storeBD.State = store.State;
+                storeDB.Name = store.Name;
+                storeDB.Description = store.Description;
+                storeDB.State = store.State;
                 _db.SaveChanges();
             }
         }

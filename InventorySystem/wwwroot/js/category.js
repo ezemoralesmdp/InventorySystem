@@ -7,7 +7,7 @@ $(document).ready(function () {
 const loadDataTable = () => {
     dataTable = $("#tblData").DataTable({
         "ajax": {
-            "url": "/Admin/Store/GetAll"
+            "url": "/Admin/Category/GetAll"
         },
         "columns": [
             { "data": "name", "width": "20%" },
@@ -24,10 +24,10 @@ const loadDataTable = () => {
                 "render": function (data) {
                     return `
                         <div class="text-center">
-                            <a href="/Admin/Store/Upsert/${data}" class="btn btn-success btn-sm text-white" style="cursor:pointer">
+                            <a href="/Admin/Category/Upsert/${data}" class="btn btn-success btn-sm text-white" style="cursor:pointer">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
-                            <a onClick=Delete("/Admin/Store/Delete/${data}") class="btn btn-danger btn-sm text-white" style="cursor:pointer">
+                            <a onClick=Delete("/Admin/Category/Delete/${data}") class="btn btn-danger btn-sm text-white" style="cursor:pointer">
                                 <i class="bi bi-trash3-fill"></i>
                             </a>
                         </div>
@@ -41,7 +41,7 @@ const loadDataTable = () => {
 
 const Delete = (url) => {
     swal({
-        title: "Are you sure to delete the store?",
+        title: "Are you sure to delete the category?",
         text: "This record cannot be recovered",
         icon: "warning",
         buttons: true,

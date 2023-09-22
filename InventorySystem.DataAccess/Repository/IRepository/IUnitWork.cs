@@ -3,6 +3,7 @@
     public interface IUnitWork : IDisposable
     {
         IStoreRepository Store { get; }
+        ICategoryRepository Category { get; }
         Task Save();
     }
 }

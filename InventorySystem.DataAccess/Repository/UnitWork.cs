@@ -6,11 +6,13 @@ namespace InventorySystem.DataAccess.Repository
     {
         private readonly ApplicationDbContext _db;
         public IStoreRepository Store { get; private set; }
+        public ICategoryRepository Category { get; private set; }
 
         public UnitWork(ApplicationDbContext db)
         {
             _db = db;
             Store = new StoreRepository(_db);
+            Category = new CategoryRepository(_db);
         }
 
         public void Dispose()

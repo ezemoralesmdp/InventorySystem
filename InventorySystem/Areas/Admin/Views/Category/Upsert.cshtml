@@ -1,0 +1,85 @@
+﻿@model InventorySystem.Models.Category
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var title = "Create Category";
+}
+
+<form method="POST">
+    <div style="padding: 0 15% 15% 0.4rem">
+        <div class="row border-0">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        </div>
+
+        @if (Model.Id != 0)
+        {
+            //Update
+            title = "Update Category";
+            <input type="hidden" asp-for="Id" id="id" />
+        }
+        <div class="col-12 border-bottom p-0">
+            <h2 class="text-primary">@title</h2>
+        </div>
+        <div class="row mb-2 mt-2">
+            <div class="form-group col-md-6">
+                <label>Name</label>
+                <input type="text" asp-for="Name" class="form-control" placeholder="Category name" id="name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row mb-2 mt-2">
+            <div class="form-group col-md-6">
+                <label>Description</label>
+                <input type="text" asp-for="Description" class="form-control" placeholder="Category description" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row mb-2 mt-2">
+            <div class="form-group col-md-6">
+                <label>State</label>
+                <select asp-for="State" class="form-select">
+                    <option value=true>Active</option>
+                    <option value=false>Inactive</option>
+                </select>
+                <span asp-validation-for="State" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div>
+            @if(Model.Id != 0)
+            {
+                <partial name="_UpdateAndReturnButtons" model="Model.Id" />
+            }
+            else
+            {
+                <partial name="_CreateAndReturnButtons" />
+            }
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.getElementById("name").addEventListener('change', function () {
+            validateName();
+        });
+
+        const validateName = () => {
+            var url = '@Url.Action("ValidateName")';
+            var id = '#id';
+            var name = '#name';
+
+            $.getJSON(url, { name: $(name).val(), id: $(id).val() }, function (data) {
+                $.each(data, function (key, value) {
+                    if(value) {
+                        var name = document.getElementById("name");
+                        swal("Error", "This name already exists", "error");
+                        name.value = "";
+                    }
+                });
+            });
+        }
+    </script>
+}
