@@ -1,8 +1,47 @@
-﻿@{
+﻿@model IEnumerable<InventorySystem.Models.Product>
+@using InventorySystem.Utils
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<header class="header">
+    <div class="container pt-sm-5">
+        <div class="heading-primary">
+            The best products & <br />
+            Brands in our store
+        </div>
+    </div>
+</header>
+
+<section>
+    <div class="container my-2">
+        <div class="col-lg-6 col-md-6 col-sm-6 d-flex">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Search..." aria-label="Search" aria-describedby="button-addon2" />
+                <button class="btn btn-outline-primary">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            @foreach (var product in Model)
+            {
+                <div class="col-lg-3 col-md-6 col-sm-6 d-flex">
+                    <div class="card w-100 my-2">
+                        <img src="@SD.ImagePath@product.ImageUrl" class="card-img-top" style="aspect-ratio: 1 / 1" />
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">@product.Description</h5>
+                            <p class="card-text"> $ @String.Format("{0:#,##0.000}", product.Price)</p>
+                        </div>
+                        <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto bg-white">
+                            <a href="#" class="btn btn-outline-primary">
+                                <i class="bi bi-tags-fill"></i> Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
