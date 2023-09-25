@@ -1,0 +1,77 @@
+﻿let dataTable;
+
+$(document).ready(function () {
+    loadDataTable();
+});
+
+const loadDataTable = () => {
+    dataTable = $("#tblData").DataTable({
+        "ajax": {
+            "url": "/Admin/Product/GetAll"
+        },
+        "columns": [
+            { "data": "serialNumber" },
+            { "data": "description" },
+            { "data": "category.name" },
+            { "data": "brand.name" },
+            { "data": "price" },
+            {
+                "data": "cost", "className": "text-end",
+                "render": function (data) {
+                    var d = data.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                    return d;
+                }
+            },
+            {
+                "data": "state",
+                "render": function (data) {
+                    return (data) ? "Active" : "Inactive";
+                }
+            },
+            {
+                "data": "id",
+                "render": function (data) {
+                    return `
+                        <div class="text-center">
+                            <a href="/Admin/Product/Upsert/${data}" class="btn btn-success btn-sm text-white" style="cursor:pointer">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a onClick=Delete("/Admin/Product/Delete/${data}") class="btn btn-danger btn-sm text-white" style="cursor:pointer">
+                                <i class="bi bi-trash3-fill"></i>
+                            </a>
+                        </div>
+                    `;
+                },
+                "wifth": "20%"
+            }
+        ]
+    });
+}
+
+const Delete = (url) => {
+    swal({
+        title: "Are you sure to delete the product?",
+        text: "This record cannot be recovered",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true
+    })
+    .then((confirmDelete) => {
+        if (confirmDelete) {
+            $.ajax({
+                type: "POST",
+                url: url,
+                success: function (data) {
+                    if (data.success) {
+                        toastr.success(data.message);
+                        dataTable.ajax.reload();
+                    }
+                    else
+                        toastr.error(data.message);
+                }
+            });
+        }
+    });
+
+    $('.swal-text').css('color', 'red');
+}

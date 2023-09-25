@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-InventorySystem-cc10c866-bd93-44e4-a63d-5f4023dbfb48</UserSecretsId>
   </PropertyGroup>
@@ -21,6 +20,10 @@
     <ProjectReference Include="..\InventorySystem.DataAccess\InventorySystem.DataAccess.csproj" />
     <ProjectReference Include="..\InventorySystem.Models\InventorySystem.Models.csproj" />
     <ProjectReference Include="..\InventorySystem.Utils\InventorySystem.Utils.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\product\" />
   </ItemGroup>
 
 </Project>
