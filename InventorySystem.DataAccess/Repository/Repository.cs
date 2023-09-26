@@ -1,4 +1,5 @@
 ﻿using InventorySystem.DataAccess.Repository.IRepository;
+using InventorySystem.Models.Specifications;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -47,6 +48,30 @@ namespace InventorySystem.DataAccess.Repository
                 query = query.AsNoTracking();
 
             return await query.ToListAsync();
+        }
+
+        public PagedList<T> GetAllPaginated(Parameters parameters, Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = null, bool isTracking = true)
+        {
+            IQueryable<T> query = dbSet;
+
+            if (filter != null)
+                query = query.Where(filter);
+
+            if (includeProperties != null)
+            {
+                foreach (var include in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(include);
+                }
+            }
+
+            if (orderBy != null)
+                query = orderBy(query);
+
+            if (!isTracking)
+                query = query.AsNoTracking();
+
+            return PagedList<T>.ToPagedList(query, parameters.PageNumber, parameters.PageSize);
         }
 
         public async Task<T> GetFirst(Expression<Func<T, bool>> filter = null, string includeProperties = null, bool isTracking = true)

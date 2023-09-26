@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using InventorySystem.Models.Specifications;
+using System.Linq.Expressions;
 
 namespace InventorySystem.DataAccess.Repository.IRepository
 {
@@ -9,6 +10,14 @@ namespace InventorySystem.DataAccess.Repository.IRepository
         Task<IEnumerable<T>> GetAll(
             Expression<Func<T, bool>> filter = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            string includeProperties = null,
+            bool isTracking = true
+        );
+
+        PagedList<T> GetAllPaginated(
+            Parameters parameters, 
+            Expression<Func<T, bool>> filter = null, 
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, 
             string includeProperties = null,
             bool isTracking = true
         );

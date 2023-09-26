@@ -1,6 +1,7 @@
 ﻿using InventorySystem.DataAccess.Repository.IRepository;
 using InventorySystem.Models;
 using InventorySystem.Models.ErrorViewModels;
+using InventorySystem.Models.Specifications;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -18,10 +19,43 @@ namespace InventorySystem.Areas.Inventory.Controllers
             _unitWork = unitWork;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index(int pageNumber = 1, string search = "", string actualSearch = "")
         {
-            IEnumerable<Product> productList = await _unitWork.Product.GetAll();
-            return View(productList);
+            if (!String.IsNullOrEmpty(search))
+                pageNumber = 1;
+            else
+                search = actualSearch;
+
+            ViewData["ActualSearch"] = search;
+
+            if(pageNumber < 1)
+                pageNumber = 1;
+
+            Parameters parameters = new()
+            {
+                PageNumber = pageNumber,
+                PageSize = 8
+            };
+
+            var result = _unitWork.Product.GetAllPaginated(parameters);
+
+            if (!String.IsNullOrEmpty(search))
+                result = _unitWork.Product.GetAllPaginated(parameters, p => p.Description.Contains(search));
+
+            ViewData["TotalPages"] = result.MetaData.TotalPages;
+            ViewData["TotalRecords"] = result.MetaData.TotalCount;
+            ViewData["PageSize"] = result.MetaData.PageSize;
+            ViewData["PageNumber"] = pageNumber;
+            ViewData["Previous"] = "disabled";
+            ViewData["Next"] = "";
+
+            if (pageNumber > 1)
+                ViewData["Previous"] = "";
+
+            if (result.MetaData.TotalPages <= pageNumber)
+                ViewData["Next"] = "disabled";
+
+            return View(result);
         }
 
         public IActionResult Privacy()
