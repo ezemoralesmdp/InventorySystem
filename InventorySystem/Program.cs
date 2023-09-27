@@ -1,7 +1,9 @@
 using InventorySystem.DataAccess;
 using InventorySystem.DataAccess.Repository;
 using InventorySystem.DataAccess.Repository.IRepository;
+using InventorySystem.Utils;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,11 +14,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false) //Quitar default para poder trabajar con roles
+    .AddDefaultTokenProviders() //Para trabajar con EmailSender
     .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation(); //Se agrega AddRazorRuntimeCompilation para ver cambios reflejados rápidamente en vistas Razor
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation(); //Se agrega AddRazorRuntimeCompilation para ver cambios reflejados rï¿½pidamente en vistas Razor
 
 builder.Services.AddScoped<IUnitWork, UnitWork>();
+
+builder.Services.AddRazorPages();
+
+builder.Services.AddSingleton<IEmailSender, EmailSender>();
 
 var app = builder.Build();
 
