@@ -15,8 +15,20 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false) //Quitar default para poder trabajar con roles
+    .AddErrorDescriber<ErrorDescribe>() // Cambiamos los mensajes de error
     .AddDefaultTokenProviders() //Para trabajar con EmailSender
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 1;
+});
+
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation(); //Se agrega AddRazorRuntimeCompilation para ver cambios reflejados r�pidamente en vistas Razor
 
 builder.Services.AddScoped<IUnitWork, UnitWork>();
