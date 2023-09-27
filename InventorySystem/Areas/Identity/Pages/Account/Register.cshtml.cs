@@ -177,7 +177,7 @@ namespace InventorySystem.Areas.Identity.Pages.Account
                     if(user.Role == null)
                         await _userManager.AddToRoleAsync(user, SD.Role_Client);
                     else
-                        await _userManager.AddToRoleAsync(user, SD.Role_Admin);
+                        await _userManager.AddToRoleAsync(user, user.Role);
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -206,6 +206,16 @@ namespace InventorySystem.Areas.Identity.Pages.Account
                             return RedirectToAction("Index", "User", new { Area = "Admin" }); //Admin registra nuevo usuario
                     }
                 }
+
+                Input = new InputModel()
+                {
+                    RoleList = _roleManager.Roles.Where(r => r.Name != SD.Role_Client).Select(n => n.Name).Select(l => new SelectListItem
+                    {
+                        Text = l,
+                        Value = l
+                    })
+                };
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
