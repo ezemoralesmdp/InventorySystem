@@ -10,6 +10,10 @@ namespace InventorySystem.DataAccess.Repository
         public IBrandRepository Brand { get; private set; }
         public IProductRepository Product { get; private set; }
         public IUserRepository User { get; private set; }
+        public IStoreProductRepository StoreProduct { get; private set; }
+        public IInventoryRepository Inventory { get; private set; }
+        public IInventoryDetailRepository InventoryDetail { get; private set; }
+        public IKardexInventoryRepository KardexInventory { get; private set; }
 
         public UnitWork(ApplicationDbContext db)
         {
@@ -19,6 +23,10 @@ namespace InventorySystem.DataAccess.Repository
             Brand = new BrandRepository(_db);
             Product = new ProductRepository(_db);
             User = new UserRepository(_db);
+            StoreProduct = new StoreProductRepository(_db);
+            Inventory = new InventoryRepository(_db);
+            InventoryDetail = new InventoryDetailRepository(_db);
+            KardexInventory = new KardexInventoryRepository(_db);
         }
 
         public void Dispose()

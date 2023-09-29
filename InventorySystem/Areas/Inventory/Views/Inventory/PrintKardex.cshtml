@@ -1,0 +1,107 @@
+﻿@model InventorySystem.Models.ViewModels.KardexInventoryVM
+@using InventorySystem.Utils
+
+@{
+    ViewData["Title"] = "PrintKardex";
+    Layout = null;
+    var title = "Kardex by Product";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+<body>
+    <table style="width:100%; border: 1px solid white;">
+        <thead class="thead-dark">
+            <tr>
+                <th style="text-align:left;">
+                    <table style="width:100%; border : 1px solid white;">
+                        <tr>
+                            <td style="text-align:center; width:40%;"><h4><strong>@title</strong></h4></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:right; width:30%;"><img src="@SD.ImagePath@Model.Product.ImageUrl" style="border-radius:5px; width:100px; height:100px;" /></td>
+                        </tr>
+                    </table>
+                </th>
+
+            </tr>
+        <thead>
+    </table>
+
+    <div class="row">
+        <div class="col-10">
+            <div class="row mb-2">
+                <div class="form-group col-md-8 mt-2">
+                    <label><strong class="m-2">Desde:</strong>@Model.InitialDate.ToShortDateString() <strong class="m-2">Hasta: </strong> @Model.FinalDate.ToShortDateString() </label>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="form-group col-md-8 mt-2">
+                    <label><strong class="m-2">Producto:</strong> @Model.Product.Description</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-responsive table-hover table-bordered">
+        @foreach (var store in Model.KardexInventoryList.GroupBy(x => x.StoreProduct.Store.Name))
+        {
+            <thead class="table-secondary">
+                <tr>
+                    <th colspan="6">@store.Key</th>
+                    <th colspan="3" class="text-center">Balance</th>
+                </tr>
+                <tr>
+                    <th class="text-center">Date</th>
+                    <th class="text-center">Type</th>
+                    <th class="text-center">Detail</th>
+                    <th class="text-center">Previous Stock</th>
+                    <th class="text-center">Input</th>
+                    <th class="text-center">Output</th>
+                    <th class="text-center">Stock</th>
+                    <th class="text-center">Cost</th>
+                    <th class="text-center">Total</th>
+                </tr>
+            </thead>
+            @foreach (var data in Model.KardexInventoryList.Where(d => d.StoreProduct.Store.Name == store.Key))
+            {
+                <tr>
+                    <td class="text-center">@data.RegistrationDate.ToShortDateString()</td>
+                    <td class="text-center">@data.Type</td>
+                    <td>@data.Detail</td>
+                    <td class="text-center">@data.PreviousStock</td>
+                    @if (data.Type == "Input")
+                    {
+                        <td class="text-center">@data.Amount</td>
+                    }
+                    else
+                    {
+                        <td class="text-center">--</td>
+                    }
+                    @if (data.Type == "Outpur")
+                    {
+                        <td class="text-center">@data.Amount</td>
+                    }
+                    else
+                    {
+                        <td class="text-center">--</td>
+                    }
+                    <td class="text-center">@data.Stock</td>
+                    <td class="text-center">@data.Cost</td>
+                    <td class="text-center">@data.Total</td>
+                </tr>
+            }
+        }
+    </table>
+
+    @if (Model.KardexInventoryList.Count() == 0)
+    {
+        <div class="col-12 border-bottom p-0">
+            <h3 class="text-primary text-center">No data to display</h3>
+        </div>
+    }
+</body>
+</html>

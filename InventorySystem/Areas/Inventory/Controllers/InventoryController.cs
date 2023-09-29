@@ -5,6 +5,7 @@ using InventorySystem.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Rotativa.AspNetCore;
 using System.Security.Claims;
 
 namespace InventorySystem.Areas.Inventory.Controllers
@@ -171,6 +172,32 @@ namespace InventorySystem.Areas.Inventory.Controllers
             );
 
             return View(kardexInventoryVM);
+        }
+
+        public async Task<IActionResult> PrintKardex(string initialDate, string finalDate, int productId)
+        {
+            KardexInventoryVM kardexInventoryVM = new KardexInventoryVM();
+            kardexInventoryVM.Product = new Product();
+            kardexInventoryVM.Product = await _unitWork.Product.Get(productId);
+
+            kardexInventoryVM.InitialDate = DateTime.Parse(initialDate);
+            kardexInventoryVM.FinalDate = DateTime.Parse(finalDate);
+
+            kardexInventoryVM.KardexInventoryList = await _unitWork.KardexInventory.GetAll(
+                k => k.StoreProduct.ProductId == productId &&
+                (k.RegistrationDate >= kardexInventoryVM.InitialDate &&
+                k.RegistrationDate <= kardexInventoryVM.FinalDate),
+                includeProperties: "StoreProduct,StoreProduct.Product,StoreProduct.Store",
+                orderBy: o => o.OrderBy(o => o.RegistrationDate)
+            );
+
+            return new ViewAsPdf(nameof(PrintKardex), kardexInventoryVM)
+            {
+                FileName = "KardexProduct.pdf",
+                PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
+                PageSize = Rotativa.AspNetCore.Options.Size.A4,
+                CustomSwitches = "--page--offset 0 --footer-center [page] --footer-font-size 12"
+            };
         }
 
         #region API

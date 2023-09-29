@@ -26,12 +26,13 @@
             </div>
         </div>
         <div class="col-2">
-            <img src="@SD.ImagePath@Model.Product.ImageUrl" style="border-radius:5px; width=100px; height:100px;" />
+            <img src="@SD.ImagePath@Model.Product.ImageUrl" style="border-radius:5px; width:100px; height:100px;" />
         </div>
     </div>
     <div class="row mb-2">
-        <div class="form-group col-md-3 mt-2">
+        <div class="form-group col-md-6 mt-2">
             <a asp-action="KardexProduct" class="btn btn-primary">New Consult</a>
+            <a asp-action="PrintKardex" asp-route-initialDate="@Model.InitialDate" asp-route-finalDate="@Model.FinalDate" asp-route-productId="@Model.Product.Id" class="btn btn-primary"><i class="bi bi-printer"></i> Print</a>
             <a asp-action="Index" class="btn btn-primary">Exit</a>
         </div>
     </div>
