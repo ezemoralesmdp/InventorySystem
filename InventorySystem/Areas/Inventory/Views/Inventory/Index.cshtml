@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-6">
+        <h2 class="text-primary">Product Stock</h2>
+    </div>
+    <div class="col-lg-6">
+        <a class="btn btn-outline-primary" asp-action="NewInventory"><i class="bi bi-plus-square-fill"></i> Create New Inventory</a>
+        <a class="btn btn-outline-primary" asp-action="KardexProduct"> Kardex</a>
+    </div>
+</div>
+
+<br />
+
+<div class="p-4 border rounded bg-light">
+    <table id="tblData" class="table table-responsive table-hover display compact cell-border">
+        <thead class="table-dark">
+            <tr>
+                <th>Stock</th>
+                <th>Product</th>
+                <th>Cost</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="~/js/inventory.js"></script>
+}

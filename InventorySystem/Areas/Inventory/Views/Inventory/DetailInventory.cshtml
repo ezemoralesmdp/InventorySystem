@@ -1,0 +1,133 @@
+﻿@model InventorySystem.Models.ViewModels.InventoryVM
+@{
+    ViewData["Title"] = "DetailInventory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container p-2">
+    <div class="card-header bg-dark text-light m-lg-0 row container">
+        <div class="col-6">
+            Add Inventory Detail
+        </div>
+        <div class="col-6 text-end">
+            <a asp-action="Index" class="text-white" style="text-decoration:none;"> Exit</a>
+        </div>
+    </div>
+
+    <form method="POST" class="p-2">
+        <input asp-for="Inventory.Id" id="inventoryId" name="inventoryId" hidden />
+
+        <div class="form-group mb-4">
+            <label>Store</label>
+            <input asp-for="Inventory.Store.Name" class="form-control" disabled />
+        </div>
+
+        <div class="row mb-2">
+            <div class="form-group col-md-3">
+                <label class="text-primary">Add Detail</label>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="form-group col-md-6 mb-2">
+                <select class="form-select" id="productId" name="productId" ></select>
+            </div>
+            <div class="form-group col-md-2 mb-2">
+                <input class="form-control text-end" placeholder="Amount" type="number" min="1" id="amountId" name="amountId" />
+            </div>
+            <div class="form-group col-md-2 mb-2">
+                <button type="submit" class="btn btn-primary" onfocus="false" id="btnAdd">
+                    Add
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <table class="table table-striped border">
+        <thead class="thead-dark">
+            <tr class="table-secondary thead-dark">
+                <th>Product</th>
+                <th>Brand</th>
+                <th>Cost</th>
+                <th>Stock</th>
+                <th>Amount</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.InventoryDetails)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(d => item.Product.Description)</td>
+                    <td>@Html.DisplayFor(d => item.Product.Brand.Name)</td>
+                    <td>@Html.DisplayFor(d => item.Product.Cost)</td>
+                    <td>@Html.DisplayFor(d => item.PreviousStock)</td>
+                    <td>@Html.DisplayFor(d => item.Amount)</td>
+                    <td>
+                        <a class="btn btn-primary text-white" asp-action="Less" asp-route-id="@item.Id"><i class="bi-file-minus-fill"></i></a>
+                        <a class="btn btn-primary text-white" asp-action="More" asp-route-id="@item.Id"><i class="bi-file-plus-fill"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @if(Model.InventoryDetails.Count() > 0)
+    {
+        <div class="align-content-lg-center">
+            <div class="col-2">
+                <a asp-action="GenerateStock" class="btn btn-warning form-control" asp-route-id="@Model.Inventory.Id"> Generate Stock</a>
+            </div>
+        </div>
+    }
+
+</div>
+
+@section Scripts {
+    <script>
+        // Select 2
+        $("#productId").select2({
+            placeholder: "Select a Product",
+            allowClear: true,
+            theme: "bootstrap-5",
+            ajax: {
+                url: "/Inventory/Inventory/SearchProduct",
+                contentType: "application/json; charset=utf-8",
+                data: function (params) {
+                    var query =
+                    {
+                        term: params.term
+                    };
+                    return query;
+                },
+                processResults: function (result) {
+                    return {
+                        results: $.map(result, function (item) {
+                            return {
+                                id: item.id,
+                                text: item.serialNumber + ' ' + item.description
+                            };
+                        })
+                    };
+                }
+            }
+        });
+    </script>
+
+    <script>
+        $("#btnAdd").click(function () {
+            let amount = document.getElementById("amountId").value;
+            let product = document.getElementById("productId").value;
+
+            if (amount.toString() == '' || amount < 1) 
+            {
+                swal("Error", "Please enter a correct amount", "error");
+                return false;
+            }
+            if (product.toString() == '') {
+                swal("Error", "Please select a product", "error");
+                return false;
+            }
+        });
+    </script>
+}
