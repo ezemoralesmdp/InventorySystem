@@ -19,6 +19,9 @@ namespace InventorySystem.DataAccess
         public DbSet<InventoryDetail> InventoryDetails { get; set; }
         public DbSet<KardexInventory> KardexInventories { get; set; }
         public DbSet<Company> Companies { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+        public DbSet<Order> Order { get; set; }
+        public DbSet<OrderDetail> OrderDetail { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
