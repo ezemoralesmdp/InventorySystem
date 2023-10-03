@@ -1,0 +1,78 @@
+﻿@model InventorySystem.Models.ViewModels.CompanyVM
+@{
+    ViewData["Title"] = "Upsert";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post">
+    <div class="container" style="padding-bottom:0.5rem;">
+        <div class="row p-1 border-0">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        </div>
+
+        @if (Model.Company.Id != 0)
+        {
+            <input type="hidden" asp-for="Company.Id" />
+        }
+
+        <div class="col-12 border-bottom p-1">
+            <h2 class="text-primary">Company<i class="fas fa-user-tie"></i></h2>
+        </div>
+
+        <div class="form-group mb-2" style="padding-top:14px;">
+            <label>Name</label>
+            <input type="text" asp-for="Company.Name" class="form-control" placeholder="Name" />
+            <span asp-validation-for="Company.Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-2" style="padding-top:14px;">
+            <label>Description</label>
+            <textarea type="text" asp-for="Company.Description" class="form-control" placeholder="Description" rows=2></textarea>
+            <span asp-validation-for="Company.Description" class="text-danger"></span>
+        </div>
+
+        <div class="row mb-2">
+            <div class="form-group col-md-4">
+                <label>Country</label>
+                <input type="text" asp-for="Company.Country" class="form-control" placeholder="Country" />
+                <span asp-validation-for="Company.Country" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-4">
+                <label>City</label>
+                <input type="text" asp-for="Company.City" class="form-control" placeholder="City" />
+                <span asp-validation-for="Company.City" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group mb-2">
+            <label>Address</label>
+            <input type="text" asp-for="Company.Address" class="form-control" placeholder="Address" />
+            <span asp-validation-for="Company.Address" class="text-danger"></span>
+        </div>
+
+        <div class="row mb-2">
+            <div class="form-group col-md-6">
+                <label>Telephone</label>
+                <input type="text" asp-for="Company.Telephone" class="form-control" placeholder="Telephone" />
+                <span asp-validation-for="Company.Telephone" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label>Store Sell</label>
+                <select asp-for="Company.StoreSellId" asp-items="@Model.StoreList" class="form-select">
+                    <option value="">-- Select a Store --</option>
+                </select>
+                <span asp-validation-for="Company.StoreSellId" class="text-danger"></span>
+            </div>
+        </div>
+
+        <br />
+
+        <div class="d-grid gap-2 d-md-block">
+            <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Save</button>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -196,7 +196,7 @@ namespace InventorySystem.Areas.Inventory.Controllers
                 FileName = "KardexProduct.pdf",
                 PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
                 PageSize = Rotativa.AspNetCore.Options.Size.A4,
-                CustomSwitches = "--page--offset 0 --footer-center [page] --footer-font-size 12"
+                CustomSwitches = "--page-offset 0 --footer-center [page] --footer-font-size 12"
             };
         }
 
