@@ -16,7 +16,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false) //Quitar default para poder trabajar con roles
     .AddErrorDescriber<ErrorDescribe>() // Cambiamos los mensajes de error
-    .AddDefaultTokenProviders() //Para trabajar con EmailSender
+    .AddDefaultTokenProviders() // Para trabajar con EmailSender
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.ConfigureApplicationCookie(options =>
@@ -36,13 +36,19 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredUniqueChars = 1;
 });
 
-builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation(); //Se agrega AddRazorRuntimeCompilation para ver cambios reflejados r�pidamente en vistas Razor
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation(); // Se agrega AddRazorRuntimeCompilation para ver cambios reflejados r�pidamente en vistas Razor
 
 builder.Services.AddScoped<IUnitWork, UnitWork>();
 
 builder.Services.AddRazorPages();
 
 builder.Services.AddSingleton<IEmailSender, EmailSender>();
+
+builder.Services.AddSession(options => {
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 var app = builder.Build();
 
@@ -63,13 +69,15 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseSession(); // Poder usar sesiones
+
 app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{area=Inventory}/{controller=Home}/{action=Index}/{id?}"); //Se agrega area Inventory
+    pattern: "{area=Inventory}/{controller=Home}/{action=Index}/{id?}"); // Se agrega area Inventory
 app.MapRazorPages();
 
 IWebHostEnvironment env = app.Environment;

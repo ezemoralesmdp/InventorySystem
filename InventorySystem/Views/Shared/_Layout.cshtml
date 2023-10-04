@@ -1,4 +1,6 @@
 ﻿@using InventorySystem.Utils
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
 
 <!DOCTYPE html>
 <html lang="en">
@@ -78,6 +80,26 @@
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" asp-area="Inventory" asp-controller="Inventory" asp-action="Index">Product Store</a></li>
                                 </ul>
+                            </li>
+                        }
+
+                        @if(httpContextAccessor.HttpContext.Session.GetInt32(SD.ssShoppingCarts) != null)
+                        {
+                            <li>
+                                <a asp-area="Inventory" asp-controller="ShoppingCart" asp-action="Index" class="nav-link">
+                                    @{
+                                        var numberProduts = httpContextAccessor.HttpContext.Session.GetInt32(SD.ssShoppingCarts);
+                                    }
+                                    <i class="bi bi-cart-fill text-primary">&nbsp; (@numberProduts)</i>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="#" class="nav-link">
+                                    <i class="bi bi-cart-fill text-primary">&nbsp; (0)</i>
+                                </a>
                             </li>
                         }
                     </ul>
