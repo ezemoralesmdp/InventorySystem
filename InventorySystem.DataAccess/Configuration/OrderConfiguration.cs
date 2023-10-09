@@ -22,6 +22,7 @@ namespace InventorySystem.DataAccess.Configuration
             builder.Property(x => x.Address).IsRequired(false);
             builder.Property(x => x.City).IsRequired(false);
             builder.Property(x => x.Country).IsRequired(false);
+            builder.Property(x => x.SessionId).IsRequired(false);
 
             /* Relationships */
 

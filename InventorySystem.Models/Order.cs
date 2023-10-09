@@ -36,6 +36,8 @@ namespace InventorySystem.Models
 
         public string TransactionId { get; set; }
 
+        public string SessionId { get; set; }
+
         public string Telephone { get; set; }
 
         public string Address { get; set; }
